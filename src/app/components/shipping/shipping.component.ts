@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { letters, phoneNumber } from "src/app/utils/validators";
 import { Step } from "src/app/interfaces/step.interface";
 import { ShippingService } from "src/app/services/shipping.service";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-shipping",
@@ -11,17 +13,21 @@ import { ShippingService } from "src/app/services/shipping.service";
 })
 export class ShippingComponent implements OnInit, OnDestroy {
   @Input() step: Step;
-
   form = new FormGroup({});
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private shippingSrv: ShippingService) {}
 
   ngOnInit() {
     this.prepareForm();
     this.populateForm();
-    this.form.valueChanges.subscribe(() =>
-      this.form.valid ? (this.step.isValid = true) : (this.step.isValid = false)
-    );
+    this.form.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() =>
+        this.form.valid
+          ? (this.step.isValid = true)
+          : (this.step.isValid = false)
+      );
   }
 
   prepareForm() {
@@ -54,5 +60,7 @@ export class ShippingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.shippingSrv.saveForm(this.form.value);
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

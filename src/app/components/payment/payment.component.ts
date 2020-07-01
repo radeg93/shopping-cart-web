@@ -4,6 +4,8 @@ import { letters } from "src/app/utils/validators";
 import { ValidatorService } from "angular-iban";
 import { Step } from "src/app/interfaces/step.interface";
 import { PaymentService } from "src/app/services/payment.service";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-payment",
@@ -12,16 +14,15 @@ import { PaymentService } from "src/app/services/payment.service";
 })
 export class PaymentComponent implements OnInit, OnDestroy {
   @Input() step: Step;
-
   form = new FormGroup({});
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private paymentSrv: PaymentService) {}
 
   ngOnInit() {
     this.prepareForm();
     this.populateForm();
-    this.form.valueChanges.subscribe(() => {
-      console.log(this.form);
+    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.form.valid
         ? (this.step.isValid = true)
         : (this.step.isValid = false);
@@ -50,5 +51,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.paymentSrv.saveForm(this.form.value);
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

@@ -15,7 +15,6 @@ import { PaymentService } from "src/app/services/payment.service";
 export class ModalWrapperComponent implements OnInit {
   totalPrice$: Observable<number>;
   stepsConfig: StepperConfig<{}> = {
-    // "Cart", "Shipping", "Payment", "Overview"
     steps: [
       { id: "Cart", isActive: true, isValid: false },
       { id: "Shipping", isActive: true, isValid: false },

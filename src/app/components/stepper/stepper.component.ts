@@ -4,7 +4,6 @@ import {
   Component,
   Input,
   OnInit,
-  Output,
 } from "@angular/core";
 import { Step } from "src/app/interfaces/step.interface";
 import {
