@@ -1,0 +1,23 @@
+<div class="stepper"
+     [style.flexDirection]="_direction === 'vertical' ? 'column' : 'row'">
+  <div class="stepper__item-wrapper"
+       [style.flexDirection]="_direction === 'vertical' ? 'column' : 'row'"
+       *ngFor="let step of _steps; let index = index; let last = last;">
+    <div class="stepper__item"
+         [class.stepper__item--completed]="index < activeIndex"
+         [class.stepper__item--active]="step?.isActive">
+      <ng-container *ngIf="(_type==='numbered' || activeIndex === index) || index > activeIndex">{{index + 1}}
+      </ng-container>
+      <ng-container *ngIf="_type==='checked' && index < activeIndex">
+        <!-- <mat-icon>done</mat-icon> -->
+        <i class="fa fa-check"
+           aria-hidden="true"></i>
+      </ng-container>
+    </div>
+
+    <div class="stepper__line"
+         *ngIf="!last"
+         [class.stepper__line--completed]="index < activeIndex"
+         [ngStyle]="_lineStyles[_direction]"></div>
+  </div>
+</div>

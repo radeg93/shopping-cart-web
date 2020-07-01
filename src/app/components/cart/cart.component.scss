@@ -1,0 +1,72 @@
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+
+  &__name {
+    display: flex;
+    align-items: center;
+    flex: 4;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    flex: 1;
+  }
+
+  &__count {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+    background: lightgray;
+
+    >i {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+    }
+  }
+
+  &__cancel {
+    display: flex;
+    align-items: center;
+    color: red;
+    font-size: 1.4rem;
+    margin-left: 1rem;
+    cursor: pointer;
+  }
+}
+
+.total-count {
+  display: flex;
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.no-data-message {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}

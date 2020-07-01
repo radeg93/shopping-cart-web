@@ -1,0 +1,71 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{currentStep.id}}</h4>
+  <button type="button"
+          class="close"
+          aria-label="Close"
+          (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <div class="content modal__content">
+    <div class="modal__stepper-section">
+      <app-stepper [configuration]="stepsConfig"></app-stepper>
+    </div>
+
+    <div class="modal__main-section">
+      <ng-container *ngIf="currentStep.id === 'Cart'">
+        <app-cart [step]="currentStep"></app-cart>
+      </ng-container>
+
+      <ng-container *ngIf="currentStep.id === 'Shipping'">
+        <app-shipping [step]="currentStep"></app-shipping>
+      </ng-container>
+
+      <ng-container *ngIf="currentStep.id === 'Payment'">
+        <app-payment [step]="currentStep"></app-payment>
+      </ng-container>
+
+      <ng-container *ngIf="currentStep.id === 'Overview'">
+        <app-cart [step]="currentStep"></app-cart>
+      </ng-container>
+
+      <ng-container *ngIf="currentStep.id === 'Success'">
+        <app-success-msg></app-success-msg>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="modal__total-count">Total: {{ (totalPrice$ | async) | currency:'EUR':true}}</div>
+  <button type="button"
+          class="btn btn-default"
+          (click)="previousStep()"
+          *ngIf="currentStep.id !== 'Cart' && currentStep.id !== 'Success'">
+    Back
+  </button>
+
+  <button type="button"
+          class="btn btn-primary"
+          (click)="nextStep()"
+          [disabled]="!currentStep.isValid"
+          *ngIf="currentStep.id !== 'Overview' && currentStep.id !== 'Success'">
+    Next
+  </button>
+
+  <button type="button"
+          class="btn btn-primary"
+          (click)="finish()"
+          [disabled]="!currentStep.isValid"
+          *ngIf="currentStep.id === 'Overview'">
+    Finish
+  </button>
+
+  <button type="button"
+          class="btn btn-primary"
+          (click)="closeDialog()"
+          *ngIf="currentStep.id === 'Success'">
+    Go To Product List
+  </button>
+</div>

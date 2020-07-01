@@ -1,0 +1,25 @@
+<ng-container *ngIf="(cartItems$ | async)?.length; else noItems">
+  <div *ngFor="let item of cartItems$ | async"
+       class="item">
+    <span class="item__name">{{ item.name }}</span>
+    <span class="item__price">{{ item.price | currency:'EUR':true }}</span>
+    <div class="item__actions">
+      <button type="button"
+              class="btn btn-default item__icon"
+              (click)="updateItemCount(item, false)">
+        <i class="fa fa-minus"></i>
+      </button>
+      <p class="item__count">{{ item.count }}</p>
+      <button type="button"
+              class="btn btn-default item__icon"
+              (click)="updateItemCount(item, true)">
+        <i class="fa fa-plus"></i>
+      </button>
+      <i class="fa fa-times item__cancel"
+         (click)="removeCartItem(item)"> </i>
+    </div>
+  </div>
+</ng-container>
+<ng-template #noItems>
+  <div class="no-data-message">No items in cart</div>
+</ng-template>
